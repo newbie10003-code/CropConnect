@@ -78,7 +78,7 @@ const Footer = () => {
             <a href="#" className="links">Privacy Policy</a>
             <a href="#" className="links">Terms Of Use</a>
           </div>
-          <div className="link_box" style={{ display: 'flex', flexDirection: 'column' }}>
+          <div className="link_box" style={{ display: 'flex', flexDirection: 'column' ,justifyContent: 'flex-start'}}>
             <h3>Contact</h3>
             <a href="#" className="fas fa-home links">DehraDun, India</a>
             <a href="#" className="fas fa-envelope links">cropconnect@gmail.com</a>
