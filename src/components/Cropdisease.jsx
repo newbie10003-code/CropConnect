@@ -64,7 +64,7 @@ const CropDisease = () => {
   };
 
   return (
-    <div className="cropD">
+    <div className="cropD down">
       
       <form onSubmit={handleSubmit} style={{ textAlign: "center", width: "90%" }}>
         <div
