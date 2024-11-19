@@ -61,7 +61,7 @@ const Login = ({ setIsLoggedIn }) => {
       <div className="login-form-container">
         
         <div style={{ zIndex: 1 }}>
-          <form onSubmit={handleSubmit} style={{ width: '45rem', float: 'right' }} className='mrg'>
+          <form onSubmit={handleSubmit} >
             <a href="/">
               <i className="fa fa-times" style={{ float: 'right', color: 'lavenderblush' }}></i>
             </a>

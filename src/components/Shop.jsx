@@ -110,7 +110,6 @@ const Shop = () => {
       <div
         id="deals"
         style={{
-          display: 'flex',
           flexWrap: 'nowrap',
           alignItems: 'center',
           margin: '1rem 1rem',
@@ -118,7 +117,7 @@ const Shop = () => {
           backgroundImage: 'none',
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div className="ds">
           <img
             src="https://img.freepik.com/free-vector/watercolor-harvest-festival-celebration-illustration_23-2149614386.jpg?ga=GA1.1.1937549596.1710587811&semt=ais_hybrid"
             style={{ width: '100%', height: '60vh' }}
@@ -160,7 +159,7 @@ const Shop = () => {
 
       {/* Additional Deals Section */}
       <section id="deals">
-        <div className="banner-box1">
+        <div className="banner-box2">
           
         </div>
         <div className="banner-box2">

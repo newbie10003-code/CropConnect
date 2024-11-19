@@ -12,7 +12,7 @@ const Home = () => {
     <h1 className="heading"><span>About Us</span></h1>
     <div className='ao'>
       <section id="about">
-        <h3 style={{padding:"0px 4%",  letterSpacing:"1px"}}>Our platform is dedicated to empowering farmers by providing an integrated digital solution for buying and selling produce, seeds, and farming tools. Through advanced machine learning and AI, we offer personalized crop recommendations and disease classification, helping farmers optimize productivity and make informed decisions. Our key features include:</h3>
+        <h3>Our platform is dedicated to empowering farmers by providing an integrated digital solution for buying and selling produce, seeds, and farming tools. Through advanced machine learning and AI, we offer personalized crop recommendations and disease classification, helping farmers optimize productivity and make informed decisions. Our key features include:</h3>
           <div className="card">
             <div className="box">
               <div className="content">

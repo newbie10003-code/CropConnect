@@ -165,24 +165,50 @@ const Nav = ({ isLoggedIn, onLogout }) => {
             </li>
           }
           <li id="close">
-            <a href="/" style={{borderRight:'none'}}>
-              <img
-                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAABmJLR0QA/wD/AP+gvaeTAAAAx0lEQVRIie2U0QqCQBBFj31gW6H4UN9eUGSF/YGBPbSCyK7MjEpEe8AnZ+7ZXWeFROKfKIAncAU2ir4tcANqINdKM9/Y+qcBSkFf6Wu7vlorBnj0AiTyobQF7hbxLhAUk4ekjc8wkQcCX8ChV1NEavZWqUS+mLQjdpTSTzGJ0M4X26lUrpaulOLM+G4SoUEam/ZZ+MpwjV0ZyT2fXdoxu9wFArW/TGcRX4TSMfnZIq4U0pi8sogdnxUf0R2ZA06+d20RJxK/yRsz0J/5iLMyRAAAAABJRU5ErkJggg=="
-                alt="Close"
-              />
+            <a href="/">
+              X
             </a>
           </li>
         </ul>
       </div>
       <div id="mobile">
-        <a href="/cart">
+      {isLoggedIn && <a href="/cart" style={{padding:'5px'}}>
           <img
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAA9ElEQVRIid3UPy5EURzF8Q8FCgURNY0FSMQaDInKVqxBZgMqyRTCCqaU0NuBckaFkjwKf4r7S7yMZNz7vCfhJLf7/s45N/eXy3/RG97jDLoIeK0FPGO1ixAY1oKansu64exEwHELJafefgY30WS3wHQJ9zG3/x18GOCwIKAfM1c58DKepM3ayODXUQW/ldtoEI36Gex5sKe55rAZQw9YmMJtS80rrJUEwLX81TwqNV/BXYZxhTPMlwachMGFtLqtalH6Ll7kbVGx5vCo2TeRrQN5b9A4oHPt4RZj9Frgvmjs89qjn3CT3/WvqSe1G2GnBe4P6wMWynZC39nrkQAAAABJRU5ErkJggg=="
+            src="images/cart.png" width="25" height="25"
             title="Cart"
             alt="Cart"
           />
-        </a>
-        <i id="bar" className="fas fa-outdent"></i>
+        </a>}
+        {isLoggedIn ? (
+              <>
+                  <img 
+                    src="images/logedin.png" style={{display:'block'}}
+                    alt="User" title="User" onClick={handleDropdownToggle} 
+                    width="25" height="25" 
+                  />
+                {isDropdownOpen && (
+                  <div className="sub-menu" style={{ zIndex:100}}>
+                    <ul>
+                    <li><a href="/user">User Details</a></li>
+                    <li>
+                    <a href="#" onClick={onLogout}>Logout</a>
+                    </li>
+                    </ul>
+                  </div>
+                )}
+              </>
+            ) : (
+              <a href="/login" style={{borderRight:'none'}}>
+                <img
+                  title="Login"
+                  src="images/login.png"
+                  alt="Login"
+                  width="25" height="25"
+                />
+              </a>
+            )}
+        <i id="bar" className="fas fa-outdent" style={{color:'wheat',}}></i>
+        
       </div>
     </nav>
   );

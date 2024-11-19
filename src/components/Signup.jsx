@@ -29,7 +29,6 @@ const Signup = () => {
     setLoading(true);
     setButtonText('Signing Up...');
   
-    // Debug: Log the form data to check userType
     console.log(formData);
   
     if (formData.password !== formData.confirmpassword) {
@@ -39,7 +38,6 @@ const Signup = () => {
       return;
     }
   
-    // Check if userType is either "Farmer" or "Regular Customer"
     if (formData.type !== 'farmer' && formData.type !== 'customer') {
       setErrorMessage('Please select a valid user type');
       setLoading(false);
@@ -85,14 +83,14 @@ const Signup = () => {
 
   return (
     <div style={{ display: 'flex', width: '100vw', height: '100vh', alignItems: 'center' }}>
-      <div className="login-form-container" style={{ width: '80%' }}>
-        <div style={{ zIndex: 1, display: 'flex', flexWrap: 'wrap' }}>
+      <div className="login-form-container">
+        <div style={{ zIndex: 1, display: 'flex', flexWrap: 'wrap' ,alignItems:'center'}}>
           <form
             className='mrg'
             onSubmit={handleSubmit}
-            style={{ width: '94%', height: '84%', display: 'flex', justifyContent: 'space-around', paddingTop: '20px', flexWrap: 'wrap', alignItems: 'center' }}
+            style={{width:'90%'}}
           >
-            <h2 style={{ margin: '0px 30%', marginBlockStart: '0em', marginBlockEnd: '0em', lineHeight: '0' }}>
+            <h2>
               Enter Your Details
             </h2>
             <a href="/">
@@ -100,7 +98,7 @@ const Signup = () => {
             </a>
             
             <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', width: '30%' }}>
+              <div className='lable'>
                 <span>NAME</span>
                 <input 
                   type="text"
@@ -114,7 +112,7 @@ const Signup = () => {
                 />
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', width: '30%' }}>
+              <div className='lable'>
                 <span>EMAIL</span>
                 <input 
                   type="text"
@@ -128,7 +126,7 @@ const Signup = () => {
                 />
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', width: '30%' }}>
+              <div className='lable'>
                 <span>PHONE NUMBER</span>
                 <input 
                   type="text"
@@ -144,7 +142,7 @@ const Signup = () => {
 
               
 
-              <div style={{ display: 'flex', flexDirection: 'column', width: '30%' }}>
+              <div className='lable'>
                 <span>AGE</span>
                 <input 
                   type="text"
@@ -158,7 +156,7 @@ const Signup = () => {
                 />
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', width: '30%' }}>
+              <div className='lable'>
                 <span>COUNTRY</span>
                 <input 
                   type="text"
@@ -172,7 +170,7 @@ const Signup = () => {
                 />
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', width: '30%' }}>
+              <div className='lable'>
                 <span>ADDRESS</span>
                 <input 
                   type="text"
@@ -186,7 +184,7 @@ const Signup = () => {
                 />
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', width: '30%' }}>
+              <div className='lable'>
               <span>USER TYPE</span>
               <select
                 name="type"
@@ -201,45 +199,22 @@ const Signup = () => {
               </select>
             </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', width: '30%' }} className="radio">
+            <div className='lable'>
                 <span>GENDER</span>
-                <div style={{ display: 'flex',justifyContent:'space-evenly',alignItems:'center' ,marginTop:'20px'}}>
-                  <label style={{ display: 'flex' }}>
-                    <input 
-                      type="radio"
-                      name="gender"
-                      value="Male"
-                      checked={formData.gender === "Male"}
-                      onChange={handleChange}
-                      required
-                    />
-                    Male
-                  </label >
-                  <label style={{ display: 'flex' }}>
-                    <input 
-                      type="radio"
-                      name="gender"
-                      value="Female"
-                      checked={formData.gender === "Female"}
-                      onChange={handleChange}
-                      required
-                    />
-                    Female
-                  </label>
-                  <label style={{ display: 'flex' }}>
-                    <input 
-                      type="radio"
-                      name="gender"
-                      value="Other"
-                      checked={formData.gender === "Other"}
-                      onChange={handleChange}
-                      required
-                    />
-                    Other
-                  </label>
-                </div>
+                <select
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                className="box"
+                required
+              >
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+                </select>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', width: '30%' }}>
+              <div className='lable'>
                 <span>PASSWORD</span>
                 <input 
                   type="password"
@@ -253,7 +228,7 @@ const Signup = () => {
                 />
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', width: '30%' }}>
+              <div className='lable'>
                 <span>CONFIRM PASSWORD</span>
                 <input 
                   type="password"

@@ -5,8 +5,6 @@ const Contact = () => {
     name: '',
     email: '',
     phone: '',
-    order: '',
-    category: '',
     query: '',
   });
 
@@ -28,13 +26,11 @@ const Contact = () => {
   
       if (response.ok) {
         const data = await response.json();
-        alert(data.message);  // Now showing the correct success message
+        alert(data.message);
         setFormData({
           name: '',
           email: '',
           phone: '',
-          order: '',
-          category: '',
           query: '',
         });
       } else {
@@ -44,110 +40,45 @@ const Contact = () => {
       console.error('Error:', error);
     }
   };
+  const [isSent, setIsSent] = useState(false);
+
+  const handleSend = () => {
+    setIsSent(true);
+  };
 
   return (
     <>
-      
-      <div style={{ display: 'flex', width: '100vw', height: 'max-content', alignItems: 'center',paddingTop:'10%' }}>
-        <div 
-          className="login-form-container query down" 
-          style={{ 
-            padding: '10px',
-            height: '35vw', 
-            width: '68%' 
-          }}
-        >
-          <div className="query">
-            <form 
-              onSubmit={handleSubmit} 
-              style={{ 
-                width: '100%',
-                height: '34vw'
-              }}
-            >
-              <label htmlFor="name">Name
-                <input 
-                  type="text" 
-                  name="name" 
-                  id="name" 
-                  placeholder="Enter Your Name" 
-                  value={formData.name}
-                  onChange={handleChange}
-                  required 
-                  style={{ height: '3rem' }} 
-                />
-              </label>
-
-              <label htmlFor="mail">Email id
-                <input 
-                  type="email" 
-                  name="email" 
-                  id="mail" 
-                  placeholder="Enter Email Address" 
-                  value={formData.email}
-                  onChange={handleChange}
-                  required 
-                  style={{ height: '3rem' }} 
-                />
-              </label>
-
-              <label htmlFor="phone">Phone Number
-                <input 
-                  type="number" 
-                  name="phone" 
-                  id="phone" 
-                  placeholder="Enter Phone Number" 
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required 
-                  style={{ height: '3rem' }} 
-                />
-              </label>
-
-              <label htmlFor="order">Order
-                <input 
-                  type="text" 
-                  name="order" 
-                  id="order" 
-                  placeholder="Order Number" 
-                  value={formData.order}
-                  onChange={handleChange}
-                  required 
-                  autoComplete="off"  
-                />
-              </label>
-
-              <label htmlFor="category">Category
-                <input 
-                  type="text" 
-                  name="category" 
-                  placeholder="Enter category" 
-                  value={formData.category}
-                  onChange={handleChange}
-                  required 
-                  autoComplete="off" 
-                  style={{ height: '3rem', borderRadius: '8px' }} 
-                />
-              </label>
-
-              <label htmlFor="message">Query Details
-                <textarea 
-                  placeholder="Enter Your Query" 
-                  id="message" 
-                  name="query" 
-                  rows="8"
-                  value={formData.query}
-                  onChange={handleChange}
-                  style={{ fontSize: '1.2rem', margin: '5px' ,padding:'20px'}} 
-                />
-              </label>
-
-              <input type="submit" className="btn" />
-            </form>
-          </div>
+    <div className={`down centered ${isSent ? "sent" : ""}`}>
+    
+      <form className="letter" onSubmit={handleSubmit} >
+        <div className="side">
+          <h1>Contact us</h1>
+          <p>
+            <textarea name="query" value={formData.query} placeholder="Your message" required onChange={handleChange} ></textarea>
+          </p>
         </div>
-      </div>
-      <div style={{ textAlign: 'center', marginTop: '4rem', zIndex: 'inherit' }}>
+        <div className="side">
+          <p>
+            <input name="name" value={formData.name} type="text" placeholder="Your name" required onChange={handleChange} />
+          </p>
+          <p>
+            <input name="email" value={formData.email} type="email" placeholder="Your email" required onChange={handleChange} />
+          </p>
+          <p>
+            <input name="phone" value={formData.phone} type="text" placeholder="Your Number" required onChange={handleChange} />
+          </p>
+          <p>
+            <button type='submit'>
+              Send
+            </button>
+          </p>
+        </div>
+      </form>
+      <div className="envelope front"></div>
+      <div className="envelope back"></div>
+      <p className="result-message centered">Thank you for your message</p>
+    </div>
+      <div style={{ textAlign: 'center', zIndex: 'inherit' }}>
         <h3 style={{ fontWeight: '400' }}> For Customer Support & Queries:</h3>
         <p>Call us at Customer Care no. : 1800-000-1111</p>
         <p>Email us at cropconnect@gmail.com</p>
