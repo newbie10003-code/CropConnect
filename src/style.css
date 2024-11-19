@@ -111,6 +111,7 @@ th {
 .image-grid-row-2{
   grid-row: span 2;
 }
+
 .slider{
   width:90%;
   height:500px;
@@ -437,6 +438,7 @@ nav {
 
 .link_box .share {
   margin-top: 1rem;
+  display: flex;
 }
 
 .link_box .share a {
@@ -740,7 +742,7 @@ button:hover {
   height: 60vh;
   background-size: cover;
   background-position: center;
-  margin: 30px 80px;
+  margin: 30px 0px;
   margin-left: 0;
 }
 
@@ -752,14 +754,11 @@ button:hover {
   height: 80vh;
   background-size: cover;
   background-position: center;
-  
 }
 
 @keyframes change {
   50% {
     background-image: url("/public/images/slider2.jpg");
-    
-
   }
 }
 
@@ -908,6 +907,11 @@ button:hover {
   font-weight: 800;
 }
 
+.ds{
+  display: flex; 
+  flex-direction: column;
+}
+
 .login-form-container {
   width: 50rem;
   height: 46rem;
@@ -927,7 +931,22 @@ button:hover {
 }
 
 .mrg{
-  margin: 1rem 1rem 4rem 0rem;
+  width: 95%;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.mrg h2{
+   margin: 0px;
+}
+
+.lable{
+  display: flex;
+  flex-direction: column;
+  width: 30%;
 }
 .login-form-container form {
   background: #cce7d0a3;
@@ -1151,10 +1170,6 @@ input[type="radio" i] {
   color: #026502;
 }
 
-.heading span {
-  color: var(--pink);
-}
-
 #about {
   display: flex;
   justify-content: center;
@@ -1163,6 +1178,10 @@ input[type="radio" i] {
   margin: 40px 0;
 }
 
+#about h3{
+  padding: 0px 4%;
+  letter-spacing: 1px;
+}
 #about .card {
   position: relative;
   min-width: 320px;
@@ -1731,6 +1750,151 @@ input[type="radio" i] {
   flex-direction: column;
   justify-content: center;
 }
+
+@import url("https://fonts.googleapis.com/css?family=Dancing+Script:400,700");
+
+.letter textarea,
+.letter input,
+.letter button {
+  line-height: 1.5rem;
+  border: 0;
+  outline: none;
+  font-family: inherit;
+  appearance: none;
+}
+
+.letter textarea,
+.letter input {
+  color: #4e5e72;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='24'><rect fill='rgb(229, 225, 187)' x='0' y='23' width='10' height='1'/></svg>");
+}
+
+.letter textarea {
+  width: 100%;
+  height: 8rem;
+  resize: none;
+}
+
+.letter input {
+  width: 50%;
+  margin-bottom: 1rem;
+}
+
+.letter input[type="text"]:invalid,
+.letter input[type="email"]:invalid {
+  box-shadow: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='24'><rect fill='rgba(240, 132, 114, 0.5)' x='0' y='23' width='10' height='1'/></svg>");
+}
+
+.letter input[type="text"]:focus,
+.letter input[type="email"]:focus,
+textarea:focus {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='24'><rect fill='rgba(78, 94, 114, 0.3)' x='0' y='23' width='10' height='1'/></svg>");
+  outline: none;
+}
+
+.letter {
+  left: 0;
+  right: 0;
+  top: 0;
+  margin: auto;
+  perspective: 60rem;
+}
+
+.side {
+  background-color: #fcfcf8;
+  outline: 1px solid transparent;
+}
+.side h1{
+  font-family: 'Dancing script','Times New Roman', Times, serif;
+}
+.side button{
+  background-color: #026502;
+  color: wheat;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.side button:hover,
+.side button:focus {
+  outline: none;
+}
+.side:nth-of-type(1) {
+  padding: 2rem 2rem 0;
+  border-radius: 1rem 1rem 0 0;
+  box-shadow: inset 0 0.75rem 2rem rgba(229, 225, 187, 0.5);
+}
+
+.side:nth-of-type(2) {
+  padding: 2rem;
+  border-radius: 0 0 1rem 1rem;
+  box-shadow: 0 0.3rem 0.3rem rgba(0, 0, 0, 0.05), inset 0 -0.57rem 2rem rgba(229, 225, 187, 0.5);
+  text-align: right;
+}
+
+.result-message {
+  opacity: 0;
+  transition: all 0.3s 2s;
+  transform: translateY(9rem);
+  z-index: -9999;
+}
+
+.centered {
+  left: 0;
+  right: 0;
+  padding-top: 10%;
+  margin: 0 auto;
+  width: 60%;
+}
+
+/* Animations */
+@keyframes closeLetter {
+  50% {
+    transform: rotateX(-90deg);
+  }
+  100% {
+    transform: rotateX(-180deg);
+  }
+}
+
+@keyframes fadeOutText {
+  49% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeInEnvelope {
+  0% {
+    opacity: 0;
+    transform: translateY(8rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(4.5rem);
+  }
+}
+
+@keyframes scaleLetter {
+  66% {
+    transform: translateY(-8rem) scale(0.5, 0.5);
+  }
+  90% {
+    transform: translateY(-8rem) scale(0.3, 0.5);
+  }
+  100% {
+    transform: translateY(-8rem) scale(0.3, 0.5);
+  }
+}
+
 @media (max-width:1260px) {
   .footer{
     width: 100%;
@@ -1743,6 +1907,10 @@ input[type="radio" i] {
   .box-container{
     flex-wrap: wrap;
     justify-content: flex-start;
+  }
+  
+  .hero{
+    height: 45vw;
   }
 }
 @media (max-width:799px) {
@@ -1757,8 +1925,8 @@ input[type="radio" i] {
     right: -300px;
     height: 100vh;
     width: 300px;
-    background: lavenderblush;
-    box-shadow: 0px 5px 15px lavenderblush;
+    background: #026502;
+    box-shadow: 0px 5px 15px #026502;
     padding: 80px 0 0 10px;
     transition: 0.4 sec;
     margin: 0;
@@ -1773,6 +1941,9 @@ input[type="radio" i] {
     margin-bottom: 25px;
   }
 
+  #navbar li a{
+    border-right: none;
+  }
   #mobile {
     display: flex;
     align-items: center;
@@ -1787,7 +1958,7 @@ input[type="radio" i] {
     position: absolute;
     top: 30px;
     left: 30px;
-    color: #222;
+    color: wheat;
     font-size: 24px;
   }
 
@@ -1808,9 +1979,30 @@ input[type="radio" i] {
   }
 
   .heading {
-    font-size: 3rem;
+    font-size: 2.5rem;
   }
-
+  h3{
+    font-size: 4vw;
+    font-weight: 100;
+  }
+  #about {
+    margin: 5%;
+  }
+  #about h3{
+    padding: 0;
+    padding-bottom: 20px;
+  }
+  #about .card {
+    min-width: 80%;
+    height: 50vw;
+  }
+  #about .card .box .content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0px;
+  }
+  #about .card .box .content p {
+    line-height: normal;
+  }
   #about .row {
     display: flex;
     flex-wrap: wrap;
@@ -1886,9 +2078,24 @@ input[type="radio" i] {
     padding: 10px 20px;
     font-size: 10px;
   }
-#banner .top{
-  width: 100%;
-}
+  #banner {
+
+    margin: 5px;
+  }
+  #banner .top{
+    background-image: url("https://img.freepik.com/free-vector/watercolor-harvest-festival-celebration-illustration_23-2149614386.jpg?ga=GA1.1.1937549596.1710587811&semt=ais_hybrid");
+    width: 100vw;
+    height: 50vw;
+  }
+  
+  @keyframes change {
+    50% {
+      background-image: url("/public/images/slider2.jpg");
+    }
+    100%{
+      background-image: url("/public/images/slider1.jpg");
+    }
+  }
   .section-p1 {
     padding: 40px 40px;
   }
@@ -1913,7 +2120,7 @@ input[type="radio" i] {
     width: 95%;
   }
 
-  #banner {
+  .ds{
     display: none;
   }
 
@@ -1936,22 +2143,17 @@ input[type="radio" i] {
   #deals {
     display: center;
     align-items: center;
-    padding: 20px 40px;
-  }
-
-  #deals .banner-box1 {
-    min-width: 100%;
-    height: 30%;
-    margin-bottom: 20px;
+    padding: 0px 0px;
   }
 
   #deals .banner-box2 {
     min-width: 100%;
     height: 30vh;
+    margin: 5px;
   }
 
   #deals2 {
-    padding: 0 40px;
+    padding: 0 5px;
     display: center;
     align-items: center;
   }
@@ -1994,33 +2196,108 @@ input[type="radio" i] {
   .site-footer{
     width: 100%;
   }
+  
+  .link_box .share a {
+    width: 3.5rem;
+    margin-right: 0;
+  }
   .login-form-container form {
-    width: 95%;
+    width: 80%;
     margin: 0;
   }
   textarea{
     width: 60vh;
   }
+  .footer .box-container{
+    gap: 2px;
+  }
+  .link_box a{
+    font-size: 12px;
+  }
+  
+  #navbar li:hover .sub-menu {
+    left: -8vw;
+  }
+  
+  .sub-menu li:hover .sub-menu1 {
+    left: -25vw;
+  }
 
-}
-
-@media (max-width:799px) {
   textarea{
     width: 100%;
   }
+  .mrg{
+    width: 85%;
+    gap:10px;
+  }
+  
+  .mrg h2{
+    margin: 0px;
+  }
+  .lable{
+    width: 40%;
+  }
+  .lable span{
+    font-size: small;
+  }
+  .centered {
+    padding-top: 15%;
+    width: 90%;
+  }
 }
 @media (max-width:477px) {
+  
+  .desc span {
+    font-size: 19px;
+    letter-spacing: normal;
+  }
+  #category .c img {
+    width: 100%;
+  }
+  .drop-box h4{
+    font-size: 12px;
+  }
+  .drop-box{
+    height: 100vw;
+  }
+  .drop-btn{
+    padding: 10px;
+    font-size: 10px;
+  }
+  .login-form-container form .box {
+    height: 1rem;
+    font-size: 0.6rem;
+  }
+  #type {
+    margin: 10px;
+  }
+  h2{
+    font-size: 1.5em;
+    line-height: normal;
+  }
   .link_box h3{
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
   #newsletter h4 {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
   #newsletter p {
-    font-size: 14px;
+    font-size: 12px;
+  }
+  .pro a img{
+    width: 60px;
+  }
+  .des span{
+    font-size: small;
   }
   #search:hover>.searchtext {
     width: 80%;
+  }
+  
+  #about .card {
+    width: 90%;
+    height: 100vw;
+    margin: 0px 0px 20px;
   }
 
   #offers {
@@ -2058,5 +2335,20 @@ input[type="radio" i] {
   }
   textarea{
     width: 100%;
+  }
+  .footer .credit {
+    font-size: 10px;
+  }
+  #navbar li:hover .sub-menu {
+    left: -10vw;
+  }
+  .sub-menu li:hover .sub-menu1 {
+    left: -40vw;
+  }
+  .login-form-container {
+    align-items: stretch;
+    margin: 0;
+    width: 100%;
+    height: -webkit-fill-available;
   }
 }
