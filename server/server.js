@@ -24,8 +24,12 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(cors({ origin: 'https://crop--connect.vercel.app', methods: 'GET,POST,DELETE', credentials: true }));
-
+const corsOptions = {
+  origin: 'https://crop--connect.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true, // Allow credentials (cookies, headers)
+};
+app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, '../public')));
 
 //mongoose.connect("mongodb://127.0.0.1/cropdb");
