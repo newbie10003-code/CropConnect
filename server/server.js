@@ -266,12 +266,14 @@ app.post("/login", async (req, res) => {
         res.cookie("jwt", token, { 
             httpOnly: true, 
             maxAge: 2 * 60 * 60 * 1000, 
-            secure: process.env.NODE_ENV === 'production', // Adjust for production
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'None',
         });
         res.cookie("isLoggedIn", true, { 
             httpOnly: true, 
             maxAge: 2 * 60 * 60 * 1000, 
-            secure: process.env.NODE_ENV === 'production', // Adjust for production
+            secure: process.env.NODE_ENV === 'production', 
+            sameSite: 'None',
         });
 
         return res.status(200).json({ 
