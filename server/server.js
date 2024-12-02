@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 const corsOptions = {
   origin: 'https://crop--connect.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  credentials: true, // Allow credentials (cookies, headers)
+  credentials: true,
 };
 app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, '../public')));
@@ -261,9 +261,18 @@ app.post("/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
         const token = jwt.sign({ _id: user._id, name: user.name, type: user.type }, jwt_secret, { expiresIn: '2h' });
-        
-        res.cookie("jwt", token, { httpOnly: true, maxAge: 2 * 60 * 60 * 1000, secure: false });
-        res.cookie("isLoggedIn", true, { httpOnly: true, maxAge: 2 * 60 * 60 * 1000, secure: false });
+
+        // Set cookies securely, using `secure: true` in production environments
+        res.cookie("jwt", token, { 
+            httpOnly: true, 
+            maxAge: 2 * 60 * 60 * 1000, 
+            secure: process.env.NODE_ENV === 'production', // Adjust for production
+        });
+        res.cookie("isLoggedIn", true, { 
+            httpOnly: true, 
+            maxAge: 2 * 60 * 60 * 1000, 
+            secure: process.env.NODE_ENV === 'production', // Adjust for production
+        });
 
         return res.status(200).json({ 
             success: true, 
