@@ -18,7 +18,7 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/contact', {
+      const response = await fetch('https://cropconnect-48a7.onrender.com/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ const Contact = () => {
           </div>
         </form>
         {successMessage && (
-          <p className="success-message">{successMessage}</p> // Display success message
+          <p className="success-message">{successMessage}</p>
         )}
       </div>
       <div className="contact-detail">
