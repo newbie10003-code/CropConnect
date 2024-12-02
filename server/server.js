@@ -268,12 +268,14 @@ app.post("/login", async (req, res) => {
             maxAge: 2 * 60 * 60 * 1000, 
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'None',
+            domain: '.vercel.app',
         });
         res.cookie("isLoggedIn", true, { 
             httpOnly: true, 
             maxAge: 2 * 60 * 60 * 1000, 
             secure: process.env.NODE_ENV === 'production', 
             sameSite: 'None',
+            domain: '.vercel.app',
         });
 
         return res.status(200).json({ 
