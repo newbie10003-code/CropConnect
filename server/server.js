@@ -8,8 +8,11 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const cors = require('cors');
 const multer = require('multer');
-
+const storage = multer.memoryStorage(); 
+const upload = multer({ storage: storage });
+const FormData = require('form-data');
 require('dotenv').config();
+const fetch = require('node-fetch');
 
 const jwt_secret = process.env.JWT_SECRET;
 const resetTokenSecret = process.env.RESET_TOKEN_SECRET;
@@ -25,7 +28,13 @@ app.use(cors({ origin: 'http://localhost:3000', methods: 'GET,POST,DELETE', cred
 
 app.use(express.static(path.join(__dirname, '../public')));
 
-mongoose.connect("mongodb://127.0.0.1/cropdb");
+//mongoose.connect("mongodb://127.0.0.1/cropdb");
+
+const mongoURI = process.env.MONGODB_URI;
+
+mongoose.connect(mongoURI)
+.then(() => console.log('Connected to MongoDB Atlas'))
+.catch((error) => console.error('Error connecting to MongoDB Atlas:', error));
 
 const transport = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -75,19 +84,11 @@ const accountSchema = new mongoose.Schema({
 const Account = mongoose.model("Account", accountSchema);
 
 const querySchema = new mongoose.Schema({
-    name: String,
-    email: String,
-    phone: {
-        type: String,
-        unique: false
-    },
-    order: {
-        type: String,
-        unique: true
-    },
-    category: String,
-    details: String
-});
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: { type: String, required: true },
+    query: { type: String, required: true },
+  });
 const Query = mongoose.model("Query", querySchema);
 
 const newsletterSchema = new mongoose.Schema({
@@ -183,151 +184,6 @@ const productSchema = new mongoose.Schema({
   
   const Product = mongoose.model('Product', productSchema);
 
-  const sampleProducts = [
-    {
-      name: "Ladies - Brown Rib-knit jumper",
-      brand: "H&M",
-      description: "Winter Collection New Modern Styles",
-      price: 1049,
-      mrp: 3498,
-      image: [
-        "https://adn-static1.nykaa.com/nykdesignstudio-images/tr:w-960,/pub/media/catalog/product/6/7/675e7b0ONLY-143654001_1.jpg?rnd=20200526195200",
-        "https://adn-static1.nykaa.com/nykdesignstudio-images/tr:w-160,/pub/media/catalog/product/6/7/675e7b0ONLY-143654001_2.jpg?rnd=20200526195200",
-        "https://adn-static1.nykaa.com/nykdesignstudio-images/tr:w-960,/pub/media/catalog/product/d/9/d9e87b0ONLY-143654002_1.jpg?rnd=20200526195200",
-        "https://adn-static1.nykaa.com/nykdesignstudio-images/tr:w-160,/pub/media/catalog/product/d/9/d9e87b0ONLY-143654002_2.jpg?rnd=20200526195200"
-      ],
-      rating: 5,
-      discount: "70% OFF",
-      details:["Material: Cotton",
-        "Pattern: Woven",
-        "Occasion: Winter",
-        "Closure Type: Drawstring",
-        "Fit: Normal",
-        "Neckline Type: Round Neck",
-        "Sleeve Type: Full Sleeves",
-        "Care Instructions: Wash With Similar Colors"
-      ],
-      category: "Jumper"
-    },
-    {
-      name: "Women Burgundy Front-Open",
-      brand: "Tokyo Talkies",
-      description: "Winter Collection New Modern Styles",
-      price: 899,
-      mrp: 1999,
-      image: [
-        "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR6WBHr_YtMgyD2p_GKblmR4vmH4YMSkOtbB3SdRa18PUoKAyPGHYnqkZSCn2uCGlb5x8BLOmorvxMZHPAUtC1xVssXUX7ziTQ6LpqVItx5OEJ-aQdbHj2ifw&usqp=CAE"
-      ],
-      rating: 5,
-      discount: "50% OFF",
-      details:["Fabric-Polyester",
-        "Length-Regular",
-        "Manufacturing-Made in India"
-      ],
-      category: "Cardigan"
-    },
-    {
-      name: "Winter Jackets Girls Hooded Hair Ball Wool Baby Clothes",
-      brand: "H&M",
-      description: "3 4 5 6 7 Years Toddler Kids",
-      price: 1049,
-      mrp: 3498,
-      image: [
-        "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRyBcNSu8wBwh9l4QWuYF-kCg-BISoXtCxJ40bDau69mmGcbN6q5p2xRW8OfMu1mHU54CI_Ciy-7YJugDwTCjXcvbFpTSFES4pZvyEpXOk&usqp=CAE"
-      ],
-      rating: 5,
-      discount: "70% OFF",
-      details:["Fabric-Polyester",
-        "Length-Regular",
-        "Manufacturing-Made in India"
-      ],
-      category: "Jacket"
-    },
-    {
-      name: "Full Sleeve Solid Women Jacket",
-      brand: "Christy World",
-      description: "Winter Collection New Modern Styles",
-      price: 399,
-      mrp: 1499,
-      image: [
-        "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSbcI9yXfKgMc-eAOR9R_a9WJLtOZ377HdlQ00hz7t_nAe3kIVeM3pdz4JWJuKnj0VZN4QkrDlFmaHRvIUwes4Ezwcova9udjXBdhtGg5Gmu6_gYlyJKi-J&usqp=CAE"
-      ],
-      rating: 5,
-      discount: "73% OFF",
-      details:["Fabric-Polyester",
-        "Length-Regular",
-        "Manufacturing-Made in India"
-      ],
-      category: "Jacket"
-    },
-    {
-      name: "Full Sleeves Woven Hooded Jacket - Off White",
-      brand: "Babyhug",
-      description: "Winter Collection New Modern Styles",
-      price: 399,
-      mrp: 1499,
-      image: [
-        "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQwbdqC-NIO8YqSyR92ToRAUUBL0ce950oRGgbMx3OQtedFlgWO8OBfx5w7ktwmAzLtDMPqfBYg0L3xGEBjPeWMdWKIVWDJ3TakxxNnRYwiUgon0gZ-hqEdnA&usqp=CAc"
-      ],
-      rating: 5,
-      discount: "73% OFF",
-      details:["Fabric-Polyester",
-        "Length-Regular",
-        "Manufacturing-Made in India"
-      ],
-      category: "Jacket"
-    },
-    {
-      name: "Men Green Hooded Sweatshirt",
-      brand: "HIGHLANDER",
-      description: "Highlander Men Green Hooded Long Sleeve Pullover Sweat Shirt",
-      price: 639,
-      mrp: 1599,
-      image: [
-        "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcREs-013XOtUI6hZ_NOkUgHwe_fc2yaEk8nUN7zkTZ3zhazwKB376zA9WQP65A9p0czXqNdXrwsQ9xJ07M-goV8n-XdIMIFpwa2VRv_TR2SS0VLiVTwuFE__g&usqp=CAE",
-        "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcREs-013XOtUI6hZ_NOkUgHwe_fc2yaEk8nUN7zkTZ3zhazwKB376zA9WQP65A9p0czXqNdXrwsQ9xJ07M-goV8n-XdIMIFpwa2VRv_TR2SS0VLiVTwuFE__g&usqp=CAE",
-        "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRq9PKhu9BygtzTpPsaH5nwyYabMHkANHsUTvyXzW2B6Hm2ckl1FTRhAbofVRA1gjxfbLS71qu0zvG-bb7zuQUj_GnvlhIf",
-        "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRyBeeh_LYAGzEXA0Zug7rrX9bYeTEDL26CsYUdq62Mv96A1QpbN4tPVeJpfDIuQHbu-wlRWaWrjVEF2DFWRGLV8C4g0gn-",
-        "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQT8uIkX3ANcyDeV7EPf1o9eyxCXWC7TATl0KaYAGCQQ7vivtfQ6vWy7WGrWuDDO-WXmfZYOtdISnBNwOIDigqePnAnjxVyNQ"
-      ],
-      rating: 5,
-      discount: "60% OFF",
-      details:["Fabric-Polyester",
-        "Sleeve Length-Long Sleeves",
-        "Length-Regular",
-        "Type-Pullover",
-        "Manufacturing-Made in India"
-      ],
-      category: "T-shirt"
-    },
-    {
-      name: "Black Solid Polyester Jacket For Men",
-      brand: "Ben Martin",
-      description: "Winter Collection New Modern Styles",
-      price: 716,
-      mrp: 899,
-      image: [
-        "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTUucg-FepC-pV9npDxFNql_v-DmzDT0oCGAon4t3BtV2O5fh95gj5GmwCGFdUzv8p4iXx0hEI-Y8YcYRJxZTmDofbXhE0M4AIkcDhglFk&usqp=CAE"
-      ],
-      rating: 5,
-      discount: "20% OFF",
-      category: "Jacket"
-    },
-    {
-      name: "Baby / Toddler Trendy Stars Mesh Dress",
-      brand: "YK",
-      description: "Winter Collection New Modern Styles",
-      price: 454,
-      mrp: 1299,
-      image: [
-        "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSFzKeofBbt1LtBaqhraZegTNxpNfbsr5DnyB0ewQBhpUnDPId70_IEljjLgmoGAV17Q7N2tz8IC6RK1NUtC2UszhGVI05MU-QhHwtrdlYm"
-      ],
-      rating: 5,
-      discount: "65% OFF",
-      category: "Baby Dress"
-    },
-  ];
-  
  /* Product.insertMany(sampleProducts)
   .then(() => console.log('Sample products added successfully'))
   .catch(err => console.error('Error inserting sample products:', err));
@@ -369,6 +225,26 @@ const validatePhone = (req, res, next) => {
     }
     next();
 };
+
+function validateToken(token) {
+    try {
+        return jwt.verify(token, JWT_SECRET);
+    } catch (err) {
+        return null;  // Invalid token
+    }
+}
+
+app.post('/validate-token', (req, res) => {
+    const { token } = req.body;
+
+    const user = validateToken(token);
+    if (user) {
+        return res.json(user);  // User details
+    } else {
+        return res.status(401).json({ error: 'Invalid or expired token' });
+    }
+});
+
 
 app.post("/login", async (req, res) => {
     const { name, password } = req.body;
@@ -517,6 +393,8 @@ app.post("/forgot-password", validateEmail, async (req, res) => {
         res.status(200).json({ message: 'Password reset link sent' });
     });
 });
+
+
 app.post("/reset-password", async (req, res) => {
     try {
         const { token, password } = req.body;
@@ -743,135 +621,120 @@ app.get("/cart", authenticateToken, async (req, res) => {
     }
   });
 
-
-  const storage = multer.memoryStorage();
-  const upload = multer({ storage });
   
-  app.post('/new-blog', authenticateToken, upload.single('image'), async (req, res) => {
-    const { userName, productName, description } = req.body;
-    const imgSrc = req.file ? { data: req.file.buffer, contentType: req.file.mimetype } : { data: Buffer.from([]), contentType: '' };
-
-    try {
-        let blogDoc = await Blog.findOne({ userId: req.user._id });
-        if (!blogDoc) {
-            blogDoc = new Blog({ userId: req.user._id, blog: [] });
-        }
-        blogDoc.blog.push({
-            userName,
-            productName,
-            description,
-            imgSrc,
-            createdAt: new Date(),
-        });
-        await blogDoc.save();
-        res.status(201).json({ message: 'Blog post created successfully!' });
-    } catch (error) {
-        console.error('Error saving blog post:', error);
-        res.status(500).json({ message: 'Error creating blog post' });
-    }
-});
-
-app.get('/blog', async (req, res) => {
-    try {
-        const blogs = await Blog.find({}).populate('userId', 'name');
-
-        const result = blogs.flatMap(blogDoc =>
-            blogDoc.blog.map(blogEntry => ({
-                _id: blogEntry._id,
-                userName: blogDoc.userId.name,
-                productName: blogEntry.productName,
-                description: blogEntry.description,
-                imgSrc: blogEntry.imgSrc,
-                createdAt: blogEntry.createdAt
-            }))
-        );
-
-        res.json(result);
-    } catch (error) {
-        console.error('Error fetching blogs:', error);
-        res.status(500).json({ message: 'Error fetching blogs' });
-    }
-});
-
-
-app.delete('/blog/:id', authenticateToken, async (req, res) => {
-    try {
-        const { id } = req.params;
-        const blogDoc = await Blog.findOneAndUpdate(
-            { 'blog._id': id, userId: req.user._id },
-            { $pull: { blog: { _id: id } } },
-            { new: true }
-        );
-
-        if (!blogDoc) {
-            return res.status(404).json({ message: 'Blog not found or user unauthorized' });
-        }
-
-        res.status(200).json({ message: 'Blog deleted successfully', blogs: blogDoc.blog });
-    } catch (error) {
-        console.error('Error deleting blog:', error);
-        res.status(500).json({ message: 'Error deleting blog' });
-    }
-});
-
-
-app.get('/blog-image/:id', async (req, res) => {
-    try {
-        const blog = await Blog.findOne({ 'blog._id': req.params.id }, { 'blog.$': 1 });
-
-        if (!blog || !blog.blog[0] || !blog.blog[0].imgSrc || !blog.blog[0].imgSrc.data) {
-            return res.status(404).json({ message: 'Image not found' });
-        }
-
-        const base64Image = blog.blog[0].imgSrc.data.toString('base64');
-        const contentType = blog.blog[0].imgSrc.contentType;
-        res.json({ base64Image, contentType });
-    } catch (error) {
-        console.error('Error serving image:', error);
-        res.status(500).json({ message: 'Error serving image' });
-    }
-});
-
   app.get('/check-auth', authenticateToken, (req, res) => {
     res.status(200).json({ message: 'Authenticated' });
   });
 
   function userId(req, res, next) {
-    const token = req.cookies.jwt; // Correctly retrieve JWT from cookies
-    console.log('Token received:', token);
+    const token = req.cookies.jwt;
+    console.log('Token received:', token);  // Debugging: Log token received
     if (!token) return res.status(401).json({ message: 'No token provided' });
 
     jwt.verify(token, jwt_secret, (err, user) => {
         if (err) return res.status(403).json({ message: 'Invalid token' });
-        req.user = user;
+        req.user = user;  // Attach user details to the request
         next();
     });
-  }
-  app.get('/user', userId, async (req, res) => {
+}
+
+// Crop disease prediction endpoint
+app.post('/crop-disease', authenticateToken,upload.single('image'), userId, async (req, res) => {
+    try {
+        const userDetails = req.user;
+        console.log('User details:', userDetails); 
+        if (!req.file) {
+            return res.status(400).json({ error: 'No image uploaded' });
+        }
+
+        // Prepare form-data with image and user details
+        const formData = new FormData();
+        formData.append('image', req.file.buffer, {
+            filename: 'image.jpg',
+            contentType: req.file.mimetype,
+        });
+        formData.append('user_details', JSON.stringify(userDetails));
+
+        // Make a POST request to the Flask server
+        const flaskResponse = await fetch('http://127.0.0.1:5001/crop-disease-predict', {
+            method: 'POST',
+            body: formData,
+            headers: formData.getHeaders(),
+            timeout: 30000, 
+
+        });
+
+        if (!flaskResponse.ok) {
+            const errorText = await flaskResponse.text();
+            return res.status(400).json({ error: `Flask server error: ${errorText}` });
+        }
+
+        const predictionData = await flaskResponse.json();
+        res.json({
+            prediction: predictionData.prediction,
+            download_url: predictionData.download_url, 
+            message: 'Prediction successful'
+        });
+    } catch (error) {
+        console.error('Error during prediction:', error);
+        res.status(500).json({ error: 'An error occurred during prediction' });
+    }
+});
+app.get('/user', authenticateToken, async (req, res) => {
     try {
         const user = await Account.findById(req.user._id).select('-password');
         if (!user) return res.status(404).json({ message: 'User not found' });
+        
+        const userDetails = req.user;
 
-        const blogs = await Blog.find({ userId: req.user._id });
+        // Send JSON data in the body, not FormData
+        const response = await fetch('http://127.0.0.1:5001/reports', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',  // Set Content-Type to application/json
+            },
+            body: JSON.stringify({ user_details: userDetails })  
+        });
 
-        const blogEntries = blogs.flatMap(blogDoc => blogDoc.blog.map(entry => ({
-            _id: entry._id,
-            userName: entry.userName,
-            productName: entry.productName,
-            description: entry.description,
-            createdAt: entry.createdAt,
-        })));
+        if (!response.ok) {
+            return res.status(500).json({ message: 'Failed to fetch reports from Flask server' });
+        }
 
-        res.json({ user, blogs: blogEntries });
+        const reportsData = await response.json();
+        res.json({
+            user,
+            reports: reportsData.reports, 
+        });
     } catch (error) {
-        console.error('Error fetching user details or blogs:', error);
-        res.status(500).json({ message: 'Error fetching user details or blogs' });
+        console.error('Error fetching user details, blogs, or reports:', error);
+        res.status(500).json({ message: 'Error fetching user details, blogs, or reports' });
     }
 });
 
-
-
-
+app.post('/contact', async (req, res) => {
+    try {
+      const { name, email, phone, query } = req.body;
+  
+      if (!name || !email || !phone || !query) {
+        return res.status(400).json({ message: 'All fields are required.' });
+      }
+  
+      const newQuery = new Query({
+        name,
+        email,
+        phone,
+        query,
+      });
+  
+      await newQuery.save();
+  
+      res.status(201).json({ message: 'Your query has been submitted successfully!' });
+    } catch (error) {
+      console.error('Error saving query:', error);
+      res.status(500).json({ message: 'Failed to submit the query. Please try again later.' });
+    }
+  });
+  
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
