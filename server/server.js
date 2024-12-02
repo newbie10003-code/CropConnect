@@ -709,8 +709,8 @@ app.get('/user', authenticateToken, async (req, res) => {
             user,
         });
     } catch (error) {
-        console.error('Error fetching user details);
-        res.status(500).json({ message: 'Error fetching user details});
+        console.error('Error fetching user details');
+        res.status(500).json({ message: 'Error fetching user details'});
     }
 });
 
