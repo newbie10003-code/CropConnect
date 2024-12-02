@@ -58,7 +58,7 @@ const AppContent = () => {
 
   useEffect(() => {
     if (!['/login', '/signup'].includes(location.pathname)) {
-      const intervalId = setInterval(checkTokenValidity, 30000);
+      const intervalId = setInterval(checkTokenValidity, 10000);
 
       return () => clearInterval(intervalId);
     }
