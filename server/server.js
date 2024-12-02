@@ -703,30 +703,14 @@ app.get('/user', authenticateToken, async (req, res) => {
     try {
         const user = await Account.findById(req.user._id).select('-password');
         if (!user) return res.status(404).json({ message: 'User not found' });
-        
+  
         const userDetails = req.user;
-
-        // Send JSON data in the body, not FormData
-        const response = await fetch('http://127.0.0.1:5001/reports', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',  // Set Content-Type to application/json
-            },
-            body: JSON.stringify({ user_details: userDetails })  
-        });
-
-        if (!response.ok) {
-            return res.status(500).json({ message: 'Failed to fetch reports from Flask server' });
-        }
-
-        const reportsData = await response.json();
         res.json({
             user,
-            reports: reportsData.reports, 
         });
     } catch (error) {
-        console.error('Error fetching user details, blogs, or reports:', error);
-        res.status(500).json({ message: 'Error fetching user details, blogs, or reports' });
+        console.error('Error fetching user details);
+        res.status(500).json({ message: 'Error fetching user details});
     }
 });
 
