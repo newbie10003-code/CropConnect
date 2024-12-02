@@ -8,7 +8,7 @@ const UserDetails = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/user`, {
+            const response = await fetch(`https://cropconnect-48a7.onrender.com/user`, {
                 method: 'GET',
                 credentials: 'include',
             });
