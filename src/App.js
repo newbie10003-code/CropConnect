@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import Nav from './components/Nav.jsx';
 import Home from './components/Home.jsx';
 import Footer from './components/Footer.jsx';
@@ -17,6 +18,8 @@ import Predict from './components/Predict.jsx';
 import Cropdisease from './components/Cropdisease.jsx';
 import Crop from './components/Crop.jsx';
 import { Animation } from './components/Animation';
+import Report from './components/Report.jsx';
+
 const AppContent = () => {
   const location = useLocation();
   const currentPath = location.pathname;
@@ -27,22 +30,39 @@ const AppContent = () => {
     '/reset-password/',
   ].some(path => currentPath.startsWith(path));
 
-  const getIsLoggedInFromCookie = () => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; isLoggedIn=`);
-    if (parts.length === 2) return parts.pop().split(';').shift() === 'true';
-    return false;
+  const checkTokenValidity = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/check-auth', {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        setIsLoggedIn(true);
+      }
+      else{
+        setIsLoggedIn(false);
+        window.location.href = '/login';
+      }
+    } catch (error) {
+      console.error('Token validation failed:', error);
+      setIsLoggedIn(false);
+      window.location.href = '/login'; 
+    }
   };
 
-  const [isLoggedIn, setIsLoggedIn] = useState(() => getIsLoggedInFromCookie());
-
-  useEffect(()=>{
-    Animation();
-  })
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const loggedInCookie = Cookies.get('isLoggedIn');
+    return loggedInCookie === 'true';
+  });
 
   useEffect(() => {
-    document.cookie = `isLoggedIn=${isLoggedIn}; max-age=7200; path=/`; 
-  }, [isLoggedIn]);
+    if (!['/login', '/signup'].includes(location.pathname)) {
+      const intervalId = setInterval(checkTokenValidity, 30000);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [location.pathname]);
 
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
@@ -63,13 +83,14 @@ const AppContent = () => {
 
   return (
     <>
+      <Animation/>
       <ScrollToTop />
       {!hideNavAndFooter && <Nav isLoggedIn={isLoggedIn} onLogout={handleLogout} />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
-        <Route path="/crop-disease" element={<Cropdisease />} />
-        <Route path="/crop-production" element={<Crop />} />
+        <Route path="/crop-disease" element={isLoggedIn ? <Cropdisease /> : <Navigate to="/login" />} />
+        <Route path="/crop-production" element={isLoggedIn ? <Crop /> : <Navigate to="/login" />} />
         <Route path="/login" element={<Login setIsLoggedIn={handleLoginSuccess} />} />
         <Route path="/products/:productId" element={<Product />} />
         <Route path="/signup" element={<Signup />} />
@@ -79,6 +100,7 @@ const AppContent = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/user" element={<UserDetails />} />
+        <Route path="/report-history" element={<Report />} />
       </Routes>
       {!hideNavAndFooter && <Footer />}
     </>

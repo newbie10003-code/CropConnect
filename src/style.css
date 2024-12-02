@@ -54,12 +54,11 @@ p {
 
 
 table {
-  border: 1px solid black;
+  width: 100%;
+  border: 1px dotted black;
   text-align: center;
   margin: 1.5rem 0rem;
-  width: 97%;
   border-collapse: collapse;
-
 }
 
 tr,
@@ -68,41 +67,13 @@ th {
   padding: 12px 12px;
 }
 
+th{
+  font-size: 1.2rem;
+}
 td{
-  font-size: 1.5rem;
+  font-size: 1rem;
   align-items: baseline;
-  float: right;
-}
-
-.user-detail table {
-  border: 1px solid black;
-  text-align: center;
-  margin: 1.5rem 0rem;
-  border-collapse: collapse;
-  width: 100%; 
-  border-collapse: collapse; 
-  margin: 20px 0; 
-  font-size: 16px; 
-  text-align: left;
-}
-
-.user-detail tr,
-td,
-th {
-  padding: 12px 12px;
-}
-
-.user-detail th, td {
- 
-  padding: 12px; 
-}
-
-.user-detail td{
-  font-size: 1.5rem;
-  align-items: baseline;
-  float: right;
-  text-align: left;
-  word-break: break-all;
+  font-weight: 100;
 }
 
 .image-grid-col-2{
@@ -259,8 +230,9 @@ nav {
   color: whitesmoke;
 }
 
-#user img{
-  width: 2.5vw;
+#report img:hover {
+  transition: ease-in-out 300ms;
+  transform: scale(0.85);
 }
 
 #user img:hover {
@@ -1676,7 +1648,6 @@ input[type="radio" i] {
 }
 
 .blog-table{
-  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1802,6 +1773,23 @@ textarea:focus {
   perspective: 60rem;
 }
 
+.success-message {
+  color: green;
+  font-size: 1.2rem;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.contact-detail{
+  text-align: center;
+  z-index: inherit;
+  padding:1.5rem 0; 
+}
+
+.contact-detail p{
+  padding: 0;
+}
+
 .side {
   background-color: #fcfcf8;
   outline: 1px solid transparent;
@@ -1816,6 +1804,7 @@ textarea:focus {
   border-radius: 0.25rem;
   font-size: 1rem;
   transition: background-color 0.2s;
+  margin-right: 5px;
 }
 
 .side button:hover,
