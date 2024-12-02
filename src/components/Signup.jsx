@@ -78,7 +78,7 @@ const Signup = () => {
       setTimeout(() => setButtonText('Sign Up'), 2000);
     }
   };
-  //StrongP@ss1, Kajal Rawat
+  //StrongP@ss1, K
 
 
   return (

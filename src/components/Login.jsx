@@ -29,7 +29,7 @@ const Login = ({ setIsLoggedIn }) => {
           name: username,
           email,
           password,
-          userType, // Include the user type in the request payload
+          userType, 
         }),
       });
 

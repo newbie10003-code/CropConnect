@@ -61,14 +61,14 @@ const Nav = ({ isLoggedIn, onLogout }) => {
   return (
     <nav className='tp'>
       <div className="logo">
-        <img src='images/A (2).png'></img>
+        <img src='images/A (2).png' alt=""></img>
       </div>
       <div>
         <ul id="navbar">
-          <li><a href="/" className={({ isActive }) => (isActive ? 'active' : '')}>Home</a></li>
-          {show && <li><a href="/#about" className={({ isActive }) => (isActive ? 'active' : '')}>About</a></li>}
-          <li><a href="/predict" className={({ isActive }) => (isActive ? 'active' : '')}>Predict</a></li>
-          <li><a href="/shop" className={({ isActive }) => (isActive ? 'active' : '')}>Shop</a></li>
+          <li><a href="/" >Home</a></li>
+          {show && <li><a href="/#about">About</a></li>}
+          <li><a href="/predict" >Predict</a></li>
+          <li><a href="/shop" >Shop</a></li>
           {location.pathname === '/shop' && (
             <li>
               <a href="#">Product Type</a>
@@ -112,7 +112,7 @@ const Nav = ({ isLoggedIn, onLogout }) => {
               </div>
             </li>
           )}
-          <li><a href="/contact" className={({ isActive }) => (isActive ? 'active' : '')}>Contact</a></li>
+          <li><a href="/contact" >Contact</a></li>
           {shouldShowSearch && (
             <li>
               <section id="search">
@@ -128,7 +128,7 @@ const Nav = ({ isLoggedIn, onLogout }) => {
             {isLoggedIn ? (
               <>
                   <img 
-                    src="images/logedin.png" style={{display:'block'}}
+                    src="images/logedin.png" height="45"
                     alt="User" title="User" onClick={handleDropdownToggle} 
                   />
                 {isDropdownOpen && (
@@ -154,9 +154,20 @@ const Nav = ({ isLoggedIn, onLogout }) => {
             )}
           </li>
           {isLoggedIn && 
+              <li id="report">
+              <a href="/report-history" style={{borderRight:'none', paddingRight:'0'}}>
+                <img  height="50"
+                  src="images/report.png"
+                  title="Cart"
+                  alt="Cart"
+                />
+              </a>
+            </li>
+          }
+          {isLoggedIn && 
               <li id="cart">
-              <a href="/cart" className={({ isActive }) => (isActive ? 'active' : '')} style={{borderRight:'none'}}>
-                <img width="42" height="42"
+              <a href="/cart" style={{borderRight:'none'}}>
+                <img  height="45"
                   src="images/cart.png"
                   title="Cart"
                   alt="Cart"
@@ -207,6 +218,15 @@ const Nav = ({ isLoggedIn, onLogout }) => {
                 />
               </a>
             )}
+            {isLoggedIn && 
+              <a href="/report-history" style={{borderRight:'none'}}>
+                <img  height="33" width="28" 
+                  src="images/report.png"
+                  title="Cart"
+                  alt="Cart"
+                />
+              </a>
+          }
         <i id="bar" className="fas fa-outdent" style={{color:'wheat',}}></i>
         
       </div>
