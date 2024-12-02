@@ -5,12 +5,16 @@ const CropDisease = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [prediction, setPrediction] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [downloadUrl, setDownloadUrl] = useState(""); 
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      console.log("Selected file:", file);
       setSelectedImage(file);
       setImagePreview(URL.createObjectURL(file));
+      setError("");
     }
   };
 
@@ -18,8 +22,10 @@ const CropDisease = () => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     if (file) {
+      console.log("Dropped file:", file);
       setSelectedImage(file);
       setImagePreview(URL.createObjectURL(file));
+      setError("");
     }
   };
 
@@ -30,13 +36,14 @@ const CropDisease = () => {
   const handleDelete = () => {
     setSelectedImage(null);
     setImagePreview(null);
+    setError("");
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!selectedImage) {
-      alert("Please upload an image!");
+      setError("Please upload an image!");
       return;
     }
 
@@ -45,19 +52,25 @@ const CropDisease = () => {
     formData.append("image", selectedImage);
 
     try {
-      const response = await fetch("http://127.0.0.1:5001/crop-disease-predict", {
+      const response = await fetch("https://cropconnect-48a7.onrender.com/crop-disease", {
         method: "POST",
+        credentials: "include",
         body: formData,
       });
 
-      const data = await response.json();
-      if (response.ok) {
-        setPrediction(data.prediction);
-      } else {
-        alert(data.error || "An error occurred during prediction.");
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.error || "An error occurred during prediction.");
+        return;
       }
+
+      const result = await response.json();
+      setPrediction(result.prediction);
+      setDownloadUrl(result.download_url);
+      setError("");
     } catch (error) {
-      alert("Failed to connect to the prediction server.");
+      setError("Failed to connect to the prediction server.");
+      console.error("Fetch error:", error);
     } finally {
       setLoading(false);
     }
@@ -65,7 +78,6 @@ const CropDisease = () => {
 
   return (
     <div className="cropD">
-      
       <form onSubmit={handleSubmit} style={{ textAlign: "center", width: "90%" }}>
         <div
           className="drop-box"
@@ -74,27 +86,23 @@ const CropDisease = () => {
           onClick={() => document.getElementById("file-upload").click()}
         >
           <div>
-          {imagePreview ? (
-            <>
-              <img
-                src={imagePreview}
-                alt="Selected"
-                style={{ maxWidth: "100%", height: "26vw" }}
-              />
-              <button
-                type="button"
-                onClick={handleDelete}
-                className="drop-close"
-              >
-                X
-              </button>
-            </>
-          ) : (
-            <>
-            <p>Crop Disease Prediction</p>
-            <h4>Drag & drop or click to upload an image</h4>
-            </>
-          )}
+            {imagePreview ? (
+              <>
+                <img
+                  src={imagePreview}
+                  alt="Selected"
+                  style={{ maxWidth: "100%", height: "26vw" }}
+                />
+                <button type="button" onClick={handleDelete} className="drop-close">
+                  X
+                </button>
+              </>
+            ) : (
+              <>
+                <p>Crop Disease Prediction</p>
+                <h4>Drag & drop or click to upload an image</h4>
+              </>
+            )}
           </div>
           <input
             id="file-upload"
@@ -104,18 +112,23 @@ const CropDisease = () => {
             style={{ display: "none" }}
           />
         </div>
-        <button
-          type="submit"
-          disabled={loading}
-          className="drop-btn"
-        >
+        <button type="submit" disabled={loading} className="drop-btn">
           {loading ? "Predicting..." : "Submit"}
         </button>
       </form>
-      {prediction && (
-        <div style={{ marginTop: "20px", textAlign: "center" }}>
-          <h3>Prediction Result:</h3>
-          <p>{prediction}</p>
+
+      {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
+
+      {prediction && !error && (
+        <div className="prediction">
+          <h3>Prediction: {prediction}</h3>
+          {downloadUrl ? (
+            <a href={downloadUrl} download className="download-btn">
+              Download Report
+            </a>
+          ) : (
+            <p>Generating report, please wait...</p>
+          )}
         </div>
       )}
     </div>
