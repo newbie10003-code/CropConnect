@@ -19,7 +19,7 @@ const Cart = () => {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const response = await fetch('http://localhost:5000/cart', {
+        const response = await fetch('https://cropconnect-48a7.onrender.com/cart', {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -55,7 +55,7 @@ const Cart = () => {
 
   const handleRemove = async (productId, size) => {
     try {
-      const response = await fetch('http://localhost:5000/cart/remove', {
+      const response = await fetch('https://cropconnect-48a7.onrender.com/cart/remove', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -81,10 +81,10 @@ const Cart = () => {
   };
 
   const handleQuantityChange = async (productId, size, newQuantity) => {
-    if (newQuantity < 1) return; // Prevent setting quantity below 1
+    if (newQuantity < 1) return;
     
     try {
-      const response = await fetch('http://localhost:5000/cart/update', {
+      const response = await fetch('https://cropconnect-48a7.onrender.com/cart/update', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -98,7 +98,6 @@ const Cart = () => {
   
       if (response.ok) {
         console.log('Quantity updated:', result);
-        // Update cart state to reflect new quantity
         setCartItems(cartItems.map(item => 
           item.productId === productId && item.size === size 
             ? { ...item, quantity: newQuantity } 
