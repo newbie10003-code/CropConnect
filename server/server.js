@@ -269,6 +269,7 @@ app.post("/login", async (req, res) => {
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'None',
             domain: '.vercel.app',
+            path: '/'
         });
         res.cookie("isLoggedIn", true, { 
             httpOnly: true, 
@@ -276,6 +277,7 @@ app.post("/login", async (req, res) => {
             secure: process.env.NODE_ENV === 'production', 
             sameSite: 'None',
             domain: '.vercel.app',
+            path: '/'
         });
 
         return res.status(200).json({ 
