@@ -27,7 +27,14 @@ import cv2
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, origins='https://crop--connect.vercel.app', supports_credentials=True)
+CORS(
+    app, 
+    origins=[
+        "https://crop--connect.vercel.app", 
+        "https://cropconnect-48a7.onrender.com" 
+    ], 
+    supports_credentials=True
+)
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -341,4 +348,4 @@ def download_report(report_id):
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5001, debug=True)
+    app.run(debug=False)
