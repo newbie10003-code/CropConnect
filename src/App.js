@@ -32,7 +32,7 @@ const AppContent = () => {
 
   const checkTokenValidity = async () => {
     try {
-      const response = await fetch('https://cropconnect-48a7.onrender.com/check-auth', {
+      const response = await fetch('http://localhost:5000/check-auth', {
         method: 'GET',
         credentials: 'include',
       });
@@ -58,7 +58,7 @@ const AppContent = () => {
 
   useEffect(() => {
     if (!['/login', '/signup'].includes(location.pathname)) {
-      const intervalId = setInterval(checkTokenValidity, 100);
+      const intervalId = setInterval(checkTokenValidity, 30000);
 
       return () => clearInterval(intervalId);
     }
@@ -70,7 +70,7 @@ const AppContent = () => {
 
   const handleLogout = async () => {
     try {
-      await fetch('https://cropconnect-48a7.onrender.com/logout', {
+      await fetch('http://localhost:5000/logout', {
         method: 'POST',
         credentials: 'include',
       });

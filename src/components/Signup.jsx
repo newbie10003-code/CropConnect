@@ -46,7 +46,7 @@ const Signup = () => {
     }
   
     try {
-      const response = await fetch('https://cropconnect-48a7.onrender.com/signup', {
+      const response = await fetch('http://localhost:5000/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -78,6 +78,9 @@ const Signup = () => {
       setTimeout(() => setButtonText('Sign Up'), 2000);
     }
   };
+  //StrongP@ss1, K
+
+
   return (
     <div style={{ display: 'flex', width: '100vw', height: '100vh', alignItems: 'center' }}>
       <div className="login-form-container">

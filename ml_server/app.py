@@ -13,7 +13,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from PIL import Image
 from datetime import datetime
-from jwt.exceptions import ExpiredSignatureError, DecodeError
+from jwt import ExpiredSignatureError, DecodeError
 from dotenv import load_dotenv
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
@@ -27,14 +27,7 @@ import cv2
 load_dotenv()
 
 app = Flask(__name__)
-CORS(
-    app, 
-    origins=[
-        "https://crop--connect.vercel.app", 
-        "https://cropconnect-48a7.onrender.com" 
-    ], 
-    supports_credentials=True
-)
+CORS(app, supports_credentials=True)
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -44,37 +37,47 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 logging.basicConfig(level=logging.INFO)
 
-JWT_SECRET = os.getenv("JWT_SECRET")
-if not JWT_SECRET:
-    raise ValueError("JWT_SECRET not found in the environment variables")
+# JWT_SECRET = os.getenv("JWT_SECRET")
+# if not JWT_SECRET:
+#     raise ValueError("JWT_SECRET not found in the environment variables")
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-model_weights_path = r"C:\Users\KAJAL\Desktop\MajorProject\crop_connect\ml_server\Models\EfficientNet.keras\EfficientNet.keras"
-model_config_path = r"C:\Users\KAJAL\Desktop\MajorProject\crop_connect\ml_server\Models\EfficientNet.keras\config.json"
+model_weights_path = r".\\model.weights.h5"
+model_config_path = r".\\config.json"
 
-if not os.path.exists(model_weights_path) or not os.path.exists(model_config_path):
-    raise FileNotFoundError("Model weights or configuration file not found.")
+# if not os.path.exists(model_weights_path) or not os.path.exists(model_config_path):
+#     raise FileNotFoundError("Model weights or configuration file not found.")
 
 with open(model_config_path, "r") as f:
     model_config = tf.keras.models.model_from_json(f.read())
 model_config.load_weights(model_weights_path)
 model = model_config
 
-def preprocess_image(image):
+def preprocess_image(img):
     try:
-        image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        sharpening_kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
-        image = cv2.filter2D(image, -1, sharpening_kernel)
-        image = cv2.GaussianBlur(image, (5, 5), 0)
-        clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(3, 3))
-        image = clahe.apply(image)
-        image = cv2.resize(image, (224, 224))
-        image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
-        image = np.expand_dims(image, axis=0)  # Shape: (1, 224, 224, 3)
-        return image
+        img = np.array(img)
+        if len(img.shape) == 2:
+            img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+        elif len(img.shape) == 3 and img.shape[2] != 3:
+            raise ValueError("Invalid image format: Expected 3 channels (RGB/BGR).")
+        channels = cv2.split(img)
+        processed_channels = []
+        for channel in channels:
+            sharpening_kernel = np.array([[0, -1, 0],
+                                          [-1, 5, -1],
+                                          [0, -1, 0]])
+            channel = cv2.filter2D(channel, -1, sharpening_kernel)
+            channel = cv2.GaussianBlur(channel, (5, 5), 0)
+            clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(3, 3))
+            channel = clahe.apply(channel)
+            processed_channels.append(channel)
+        img = cv2.merge(processed_channels)
+        img = cv2.resize(img, (224, 224))
+        img = img / 255.0
+        img = np.expand_dims(img, axis=0)
+        return img
     except Exception as e:
         raise ValueError(f"Error preprocessing the image: {e}")
     
@@ -348,4 +351,4 @@ def download_report(report_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(host='127.0.0.1', port=5001, debug=True)

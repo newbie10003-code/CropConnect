@@ -6,7 +6,7 @@ const CropDisease = () => {
   const [prediction, setPrediction] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [downloadUrl, setDownloadUrl] = useState(""); 
+  const [downloadUrl, setDownloadUrl] = useState(""); // State for download URL
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -52,7 +52,7 @@ const CropDisease = () => {
     formData.append("image", selectedImage);
 
     try {
-      const response = await fetch("https://cropconnect-48a7.onrender.com/crop-disease", {
+      const response = await fetch("http://localhost:5000/crop-disease", {
         method: "POST",
         credentials: "include",
         body: formData,

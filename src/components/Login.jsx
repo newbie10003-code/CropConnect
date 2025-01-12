@@ -7,7 +7,7 @@ const Login = ({ setIsLoggedIn }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('regular');
+  const [userType, setUserType] = useState('regular'); // New state for user type
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [buttonText, setButtonText] = useState('Sign In');
@@ -19,7 +19,7 @@ const Login = ({ setIsLoggedIn }) => {
     setButtonText('Signing In...');
 
     try {
-      const response = await fetch('https://cropconnect-48a7.onrender.com/login', {
+      const response = await fetch('http://localhost:5000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

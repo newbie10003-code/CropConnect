@@ -10,7 +10,7 @@ const Shop = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('https://cropconnect-48a7.onrender.com/products');
+                const response = await fetch('http://localhost:5000/products');
                 const data = await response.json();
 
                 const shuffledProducts = data.sort(() => 0.5 - Math.random());

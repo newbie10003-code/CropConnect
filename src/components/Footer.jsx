@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../style.css';
 
 const Footer = () => {
-  const [email, setEmail] = useState(''); 
+  const [email, setEmail] = useState(''); // Added email state
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [buttonText, setButtonText] = useState('Sign Up');
@@ -15,7 +15,7 @@ const Footer = () => {
     setButtonText('Signing Up...');
 
     try {
-      const response = await fetch('https://cropconnect-48a7.onrender.com/newsletter', {
+      const response = await fetch('http://localhost:5000/newsletter', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -31,6 +31,7 @@ const Footer = () => {
         setErrorMessage(errorData.message || 'Failed to sign up');
         setButtonText('Try Again');
       } else {
+        // You can handle a success message or any other logic here
         setErrorMessage('');
         setButtonText('Signed Up!');
         navigate('/');
@@ -41,7 +42,7 @@ const Footer = () => {
       setButtonText('Try Again');
     } finally {
       setLoading(false);
-      setTimeout(() => setButtonText('Sign Up'), 2000);
+      setTimeout(() => setButtonText('Sign Up'), 2000); // Reset button text after 2 seconds
     }
   };
 

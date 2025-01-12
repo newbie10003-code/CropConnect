@@ -24,15 +24,11 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const corsOptions = {
-  origin: 'https://crop--connect.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  credentials: true,
-};
-app.use(cors(corsOptions));
+app.use(cors({ origin: ['https://crop--connect.vercel.app', 'http://localhost:3000'], methods: 'GET,POST,DELETE', credentials: true }));
+
 app.use(express.static(path.join(__dirname, '../public')));
 
-//mongoose.connect("mongodb://127.0.0.1/cropdb");
+// mongoose.connect("mongodb://127.0.0.1/cropdb");
 
 const mongoURI = process.env.MONGODB_URI;
 
@@ -261,24 +257,9 @@ app.post("/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
         const token = jwt.sign({ _id: user._id, name: user.name, type: user.type }, jwt_secret, { expiresIn: '2h' });
-
-        // Set cookies securely, using `secure: true` in production environments
-        res.cookie("jwt", token, { 
-            httpOnly: true, 
-            maxAge: 2 * 60 * 60 * 1000, 
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'None',
-            domain: '.vercel.app',
-            path: '/'
-        });
-        res.cookie("isLoggedIn", true, { 
-            httpOnly: true, 
-            maxAge: 2 * 60 * 60 * 1000, 
-            secure: process.env.NODE_ENV === 'production', 
-            sameSite: 'None',
-            domain: '.vercel.app',
-            path: '/'
-        });
+        
+        res.cookie("jwt", token, { httpOnly: true, maxAge: 2 * 60 * 60 * 1000, secure: false });
+        res.cookie("isLoggedIn", true, { maxAge: 2 * 60 * 60 * 1000, secure: false });
 
         return res.status(200).json({ 
             success: true, 
@@ -703,14 +684,30 @@ app.get('/user', authenticateToken, async (req, res) => {
     try {
         const user = await Account.findById(req.user._id).select('-password');
         if (!user) return res.status(404).json({ message: 'User not found' });
-  
+        
         const userDetails = req.user;
+
+        // Send JSON data in the body, not FormData
+        const response = await fetch('http://127.0.0.1:5001/reports', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',  // Set Content-Type to application/json
+            },
+            body: JSON.stringify({ user_details: userDetails })  
+        });
+
+        if (!response.ok) {
+            return res.status(500).json({ message: 'Failed to fetch reports from Flask server' });
+        }
+
+        const reportsData = await response.json();
         res.json({
             user,
+            reports: reportsData.reports, 
         });
     } catch (error) {
-        console.error('Error fetching user details');
-        res.status(500).json({ message: 'Error fetching user details'});
+        console.error('Error fetching user details, blogs, or reports:', error);
+        res.status(500).json({ message: 'Error fetching user details, blogs, or reports' });
     }
 });
 
