@@ -13,7 +13,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from PIL import Image
 from datetime import datetime
-from jwt import ExpiredSignatureError, DecodeError
+# from jwt import ExpiredSignatureError, DecodeError
 from dotenv import load_dotenv
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
