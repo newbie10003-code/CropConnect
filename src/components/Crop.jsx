@@ -14,7 +14,6 @@ const Crop = () => {
   const [recommendation, setRecommendation] = useState('');
   const [error, setError] = useState('');
 
-  // Limits as per your message:
   const limits = {
     nitrogen: { min: 0, max: 140 },
     phosphorus: { min: 5, max: 145 },
