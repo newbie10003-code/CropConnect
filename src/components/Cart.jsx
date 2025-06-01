@@ -10,7 +10,7 @@ const Cart = () => {
   };
   const [cartItems, setCartItems] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
-  const estimatedTaxes = 48;
+  const [estimatedTaxes, setEstimatedTaxes] = useState(0);
   const [totalSavings, setTotalSavings] = useState(0);
   const [total, setTotal] = useState(0);
   const [coupon, setCoupon] = useState(0);
@@ -45,6 +45,7 @@ const Cart = () => {
     const newSubtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
     const newMRPTotal = cartItems.reduce((acc, item) => acc + (item.mrp * item.quantity), 0);
     setSubtotal(newSubtotal);
+    setEstimatedTaxes(newSubtotal > 50 ? 20: 0);
 
     const newTotal = newSubtotal + estimatedTaxes - coupon;
     setTotal(newTotal);
@@ -146,7 +147,7 @@ const Cart = () => {
                 <div className="content">
                   <h1>{item.name}</h1>
                   <div title={`You have selected this product to be shipped in the color yellow.`} className="color yellow"></div>
-                  <div style={{ top: '43px' }} className="type small">{item.size || ' '}</div>
+                  <div style={{ top: '43px' }} className="type small">{item.quantity || ' '}</div>
                 </div>
 
                 <footer className="content">

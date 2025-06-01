@@ -53,11 +53,7 @@ const Product = () => {
   };
 
   const handleAddToCart = async () => {
-    if (!selectedSize) {
-        alert('Please select a size');
-        return;
-    }
-
+    
     const product = {
         productId: productDetails._id,
         quantity: 1,
@@ -65,7 +61,7 @@ const Product = () => {
         image: mainImg,
         price: productDetails.price,
         mrp: productDetails.mrp,
-        size: selectedSize
+        size: "XS"
     };
 
     try {
@@ -138,15 +134,7 @@ const Product = () => {
           <h4>Selling Price Rs. {price}</h4>
           <p>MRP ₹{mrp} ({discount})</p>
           <h5>(Incl. of all taxes)</h5>
-          <select onChange={(e) => setSelectedSize(e.target.value)} value={selectedSize}>
-            <option value="">Select Size</option>
-            <option value="XS">XS</option>
-            <option value="S">S</option>
-            <option value="M">M</option>
-            <option value="L">L</option>
-            <option value="XL">XL</option>
-            <option value="XXL">XXL</option>
-          </select>
+          
           <button onClick={handleAddToCart}>Add to Cart</button>
           <h4>Product Details</h4>
           <p>{description}</p>

@@ -8,6 +8,8 @@ const Nav = ({ isLoggedIn, onLogout }) => {
   const location = useLocation();
   const shouldShowSearch = ['/shop'].includes(location.pathname);
   const show = location.pathname === '/';
+  const isProductPage = location.pathname.startsWith('/products/' || '/cart');
+  const navClass = isProductPage ? '' : 'fixed-nav';
 
   useEffect(() => {
     const bar = document.getElementById('bar');
@@ -59,7 +61,7 @@ const Nav = ({ isLoggedIn, onLogout }) => {
   }, []);
 
   return (
-    <nav className='tp'>
+    <nav className={`tp ${navClass}`}>
       <div className="logo">
         <img src='images/A (2).png' alt=""></img>
       </div>
@@ -71,46 +73,65 @@ const Nav = ({ isLoggedIn, onLogout }) => {
           <li><a href="/shop" >Shop</a></li>
           {location.pathname === '/shop' && (
             <li>
-              <a href="#">Product Type</a>
-              <div className="sub-menu">
-                <ul>
-                  <li>
-                    <a href="#">
-                      UPCOMING OCCASIONS<i className="fa fa-angle-right" style={{ float: 'right'}}></i>
-                      <div className="sub-menu1" >
-                        <ul>
-                          <li><a href="#">Christmas - 25th Dec</a></li>
-                        </ul>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      EVERYDAY WEEDING<i className="fa fa-angle-right" style={{ float: 'right' }}></i>
-                      <div className="sub-menu1">
-                        <ul>
-                          <li><a href="#">House Warming</a></li>
-                          <li><a href="#">New Born Baby</a></li>
-                          <li><a href="#">Wedding</a></li>
-                        </ul>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      EMOTIONS/SENTIMENTS<i className="fa fa-angle-right" style={{ float: 'right' }}></i>
-                      <div className="sub-menu1">
-                        <ul>
-                          <li><a href="#">Congratulations</a></li>
-                          <li><a href="#">Get Well Soon</a></li>
-                          <li><a href="#">Sympathy N Funeral</a></li>
-                        </ul>
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
+            <a href="#">Product Type</a>
+            <div className="sub-menu">
+              <ul>
+                <li>
+                  <a href="#">
+                    Fertilizers <i className="fa fa-angle-right" style={{ float: 'right' }}></i>
+                    <div className="sub-menu1">
+                      <ul>
+                        <li><a href="#">NPK Fertilizers</a></li>
+                        <li><a href="#">Organic Fertilizers</a></li>
+                        <li><a href="#">Potassium Fertilizers</a></li>
+                        <li><a href="#">Micronutrient Fertilizers</a></li>
+                      </ul>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    Pesticides <i className="fa fa-angle-right" style={{ float: 'right' }}></i>
+                    <div className="sub-menu1">
+                      <ul>
+                        <li><a href="#">Insecticides</a></li>
+                        <li><a href="#">Fungicides</a></li>
+                        <li><a href="#">Herbicides</a></li>
+                        <li><a href="#">Miticides</a></li>
+                      </ul>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    Seeds <i className="fa fa-angle-right" style={{ float: 'right' }}></i>
+                    <div className="sub-menu1">
+                      <ul>
+                        <li><a href="#">Vegetable Seeds</a></li>
+                        <li><a href="#">Fruit Seeds</a></li>
+                        <li><a href="#">Flower Seeds</a></li>
+                        <li><a href="#">Herb Seeds</a></li>
+                      </ul>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    Garden Tools <i className="fa fa-angle-right" style={{ float: 'right' }}></i>
+                    <div className="sub-menu1">
+                      <ul>
+                        <li><a href="#">Shovels</a></li>
+                        <li><a href="#">Rakes</a></li>
+                        <li><a href="#">Pruners</a></li>
+                        <li><a href="#">Wheelbarrows</a></li>
+                      </ul>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          
           )}
           <li><a href="/contact" >Contact</a></li>
           {shouldShowSearch && (
