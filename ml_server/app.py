@@ -350,8 +350,8 @@ def download_report(report_id):
     except Exception as e:
         print(f"Error in download_report: {str(e)}")
         return jsonify({"error": f"Error fetching the report: {str(e)}"}), 500
-MODEL_PATH = r'C:\Users\KAJAL\Desktop\MajorProject\crop_connect\ml_server\Models\CropRecommendationModel(1).pkl'
-LABELENCODER_PATH = r'C:\Users\KAJAL\Desktop\MajorProject\crop_connect\ml_server\Models\labelencoder.pkl'
+MODEL_PATH = r'CropRecommendationModel.pkl'
+LABELENCODER_PATH = r'labelencoder.pkl'
 
 # Load model
 with open(MODEL_PATH, 'rb') as model_file:
