@@ -28,7 +28,7 @@ app.use(cors({ origin: ['https://crop--connect.vercel.app', 'http://localhost:30
 
 app.use(express.static(path.join(__dirname, '../public')));
 
-// mongoose.connect("mongodb://127.0.0.1/cropdb");
+//mongoose.connect("mongodb://127.0.0.1/cropdb");
 
 const mongoURI = process.env.MONGODB_URI;
 
@@ -184,15 +184,204 @@ const productSchema = new mongoose.Schema({
   
   const Product = mongoose.model('Product', productSchema);
 
- /* Product.insertMany(sampleProducts)
-  .then(() => console.log('Sample products added successfully'))
-  .catch(err => console.error('Error inserting sample products:', err));
-*/
-
-  /*Product.insertMany(sampleProducts)
-    .then(() => console.log("Sample products added"))
-    .catch(err => console.error(err));
-  */
+  const products = [
+    {
+        name: "Cucumber Straight Eight F1 Seeds",
+        brand: "Lee Valley",
+        description: "High-quality cucumber seeds for straight and uniform fruits.",
+        price: 350,
+        mrp: 500,
+        image: [
+          "https://www.leevalley.com/_next/image?url=https%3A%2F%2Fimages.contentstack.io%2Fv3%2Fassets%2Fblt050573defaf102e3%2Fblt2022e2cae71fd7d3%2F669c1213a3bb19ee63cbbd1f%2Fhttps_assets.leevalley.com_Size5_10113_SD136-cucumber-straight-eight-f-0257.jpg%3Fbranch%3Dproduction&w=1200&q=75"
+        ],
+        rating: 4,
+        discount: "30% OFF",
+        details: [
+          "Type: Hybrid",
+          "Growth: High yielding",
+          "Packaging: 1 packet",
+          "Use: Ideal for home gardening"
+        ],
+        category: "Seeds"
+      },
+      {
+        name: "Cauliflower Hybrid Seeds",
+        brand: "Green World",
+        description: "Hybrid cauliflower seeds that yield large, robust heads.",
+        price: 150,
+        mrp: 200,
+        image: [
+          "https://tiimg.tistatic.com/fp/1/006/177/hybrid-cauliflower-seeds-packets--062.jpg"
+        ],
+        rating: 4,
+        discount: "25% OFF",
+        details: [
+          "Type: Hybrid",
+          "Growth: Fast-growing, disease-resistant",
+          "Packaging: 1 packet",
+          "Use: Ideal for cool climates"
+        ],
+        category: "Seeds"
+      },
+      {
+        name: "GW-451 Hybrid Seeds",
+        brand: "Green World",
+        description: "High-quality hybrid seeds for fast and uniform germination.",
+        price: 100,
+        mrp: 150,
+        image: [
+          "https://5.imimg.com/data5/SELLER/Default/2022/8/YJ/QC/YN/132016521/gw-451-500x500.jpg"
+        ],
+        rating: 4,
+        discount: "33% OFF",
+        details: [
+          "Type: Hybrid",
+          "Growth: Ideal for large-scale farming",
+          "Packaging: 500 gm",
+          "Use: Suitable for various soil types"
+        ],
+        category: "Seeds"
+      },
+      {
+        name: "Gherkin Cucumber Seeds",
+        brand: "Etsy",
+        description: "Gherkin cucumber seeds for delicious pickles and fresh consumption.",
+        price: 250,
+        mrp: 350,
+        image: [
+          "https://i.etsystatic.com/14946313/r/il/1374b9/2139033384/il_794xN.2139033384_ihrx.jpg"
+        ],
+        rating: 4,
+        discount: "28% OFF",
+        details: [
+          "Type: Organic",
+          "Growth: Bush-type gherkin cucumber",
+          "Packaging: 1 packet",
+          "Use: Ideal for container gardening"
+        ],
+        category: "Seeds"
+      },
+      {
+        name: "Tomato Seeds - Hybrid",
+        brand: "Amazon",
+        description: "Hybrid tomato seeds for high yield and disease resistance.",
+        price: 180,
+        mrp: 250,
+        image: [
+          "https://m.media-amazon.com/images/I/71kATqa7kqL._AC_UF1000,1000_QL80_FMwebp_.jpg"
+        ],
+        rating: 5,
+        discount: "28% OFF",
+        details: [
+          "Type: Hybrid",
+          "Growth: Disease-resistant, high yield",
+          "Packaging: 1 packet",
+          "Use: Suitable for home gardens"
+        ],
+        category: "Seeds"
+      },
+      {
+        name: "Chili Seeds",
+        brand: "NPlants Nursery",
+        description: "Spicy and flavorful chili seeds for home cultivation.",
+        price: 90,
+        mrp: 130,
+        image: [
+          "https://nplantsnursery.in/wp-content/uploads/2025/01/WhatsApp-Image-2025-01-17-at-6.01.26-PM.jpeg"
+        ],
+        rating: 4,
+        discount: "31% OFF",
+        details: [
+          "Type: Organic",
+          "Growth: Strong, pest-resistant",
+          "Packaging: 1 packet",
+          "Use: Ideal for warm climates"
+        ],
+        category: "Seeds"
+      },
+      {
+        name: "Lettuce Seeds",
+        brand: "NPlants Nursery",
+        description: "Premium lettuce seeds for fresh, crisp leaves.",
+        price: 120,
+        mrp: 180,
+        image: [
+          "https://nplantsnursery.in/wp-content/uploads/2025/01/WhatsApp-Image-2025-01-17-at-5.18.40-PM.jpeg"
+        ],
+        rating: 4,
+        discount: "33% OFF",
+        details: [
+          "Type: Heirloom",
+          "Growth: Cold-tolerant, fast-growing",
+          "Packaging: 1 packet",
+          "Use: Suitable for indoor gardening"
+        ],
+        category: "Seeds"
+      },
+      {
+        name: "Basil Seeds",
+        brand: "NPlants Nursery",
+        description: "Fresh basil seeds for a fragrant, herb-rich garden.",
+        price: 80,
+        mrp: 120,
+        image: [
+          "https://nplantsnursery.in/wp-content/uploads/2025/01/WhatsApp-Image-2025-01-17-at-5.03.16-PM.jpeg"
+        ],
+        rating: 4,
+        discount: "33% OFF",
+        details: [
+          "Type: Organic",
+          "Growth: Quick germination, pest-resistant",
+          "Packaging: 1 packet",
+          "Use: Ideal for herb gardens"
+        ],
+        category: "Seeds"
+      },
+      {
+        name: "Carrot Seeds",
+        brand: "NPlants Nursery",
+        description: "Healthy and sweet carrot seeds for home cultivation.",
+        price: 100,
+        mrp: 150,
+        image: [
+          "https://nplantsnursery.in/wp-content/uploads/2025/01/WhatsApp-Image-2025-01-17-at-5.13.29-PM.jpeg"
+        ],
+        rating: 4,
+        discount: "33% OFF",
+        details: [
+          "Type: Heirloom",
+          "Growth: Deep root, high yield",
+          "Packaging: 1 packet",
+          "Use: Suitable for sandy soil"
+        ],
+        category: "Seeds"
+      },
+      {
+        name: "Sunflower Seeds",
+        brand: "Generic",
+        description: "Bright and sunny sunflower seeds for garden beauty.",
+        price: 150,
+        mrp: 200,
+        image: [
+          "https://5.imimg.com/data5/SELLER/Default/2022/7/UC/RC/YR/1769358/new-product-500x500.jpg"
+        ],
+        rating: 4,
+        discount: "25% OFF",
+        details: [
+          "Type: Organic",
+          "Growth: Tall and vibrant flowers",
+          "Packaging: 1 packet",
+          "Use: Ideal for home gardens"
+        ],
+        category: "Seeds"
+      }
+         
+  ];
+  
+  
+//   Product.insertMany(products)
+//   .then(() => console.log("Sample products added"))
+//   .catch(err => console.error(err));
 
 const blogSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'Account', required: true },
@@ -466,7 +655,6 @@ app.use(express.json());
 
 const authenticateToken = (req, res, next) => {
     const token = req.cookies.jwt;
-    console.log('Token received:', token);
     if (!token) return res.status(401).json({ message: 'No token provided' });
 
     jwt.verify(token, jwt_secret, (err, user) => {
@@ -622,13 +810,16 @@ app.get("/cart", authenticateToken, async (req, res) => {
   });
 
   
-  app.get('/check-auth', authenticateToken, (req, res) => {
-    res.status(200).json({ message: 'Authenticated' });
-  });
+app.get('/check-auth', authenticateToken, (req, res) => {
+    res.status(200).json({
+        message: 'Authenticated',
+        name: req.user.name,
+        role: req.user.role,
+      });
+});
 
   function userId(req, res, next) {
     const token = req.cookies.jwt;
-    console.log('Token received:', token);  // Debugging: Log token received
     if (!token) return res.status(401).json({ message: 'No token provided' });
 
     jwt.verify(token, jwt_secret, (err, user) => {
@@ -680,6 +871,49 @@ app.post('/crop-disease', authenticateToken,upload.single('image'), userId, asyn
         res.status(500).json({ error: 'An error occurred during prediction' });
     }
 });
+
+//crop recommendation endpoint
+app.post('/crop-recommendation', authenticateToken, userId, async (req, res) => {
+    try {
+      const { nitrogen, phosphorus, potassium, temperature, humidity, ph, rainfall } = req.body;
+  
+      if ([nitrogen, phosphorus, potassium, temperature, humidity, ph, rainfall].some(val => val === undefined)) {
+        return res.status(400).json({ error: 'Missing input values' });
+      }
+  
+      const flaskResponse = await fetch('http://127.0.0.1:5001/crop-recommend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          N: nitrogen,
+          P: phosphorus,
+          K: potassium,
+          temperature,
+          humidity,
+          ph,
+          rainfall
+        }),
+      });
+  
+      if (!flaskResponse.ok) {
+        const errorText = await flaskResponse.text();
+        return res.status(400).json({ error: `Flask error: ${errorText}` });
+      }
+  
+      const result = await flaskResponse.json();
+  
+      res.json({
+        recommendation: result.crop,
+        message: 'Prediction successful',
+      });
+  
+    } catch (err) {
+      console.error('Error in crop recommendation:', err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+  
+
 app.get('/user', authenticateToken, async (req, res) => {
     try {
         const user = await Account.findById(req.user._id).select('-password');
@@ -691,7 +925,7 @@ app.get('/user', authenticateToken, async (req, res) => {
         const response = await fetch('http://127.0.0.1:5001/reports', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',  // Set Content-Type to application/json
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({ user_details: userDetails })  
         });
@@ -734,6 +968,45 @@ app.post('/contact', async (req, res) => {
       res.status(500).json({ message: 'Failed to submit the query. Please try again later.' });
     }
   });
+
+  app.post('/add-product', upload.array('images'), async (req, res) => {
+    try {
+        const {
+            name, brand, description, price, mrp, rating,
+            discount, stock, category
+        } = req.body;
+
+        const details = Array.isArray(req.body.details)
+            ? req.body.details
+            : [req.body.details];
+
+        const imagePaths = req.files.map(file => {
+            const base64 = file.buffer.toString('base64');
+            return `data:${file.mimetype};base64,${base64}`;
+        });
+
+        const newProduct = new Product({
+            name,
+            brand,
+            description,
+            price,
+            mrp,
+            image: imagePaths,
+            rating,
+            discount,
+            stock,
+            category,
+            details
+        });
+
+        await newProduct.save();
+        res.status(201).json({ success: true, message: "Product added successfully!" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: "Server error while adding product" });
+    }
+});
+
   
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
