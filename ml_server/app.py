@@ -1,6 +1,8 @@
 import base64
 import os
 import logging
+import pickle
+import pandas as pd
 import tensorflow as tf
 import cv2
 import numpy as np
@@ -348,7 +350,57 @@ def download_report(report_id):
     except Exception as e:
         print(f"Error in download_report: {str(e)}")
         return jsonify({"error": f"Error fetching the report: {str(e)}"}), 500
+MODEL_PATH = r'C:\Users\KAJAL\Desktop\MajorProject\crop_connect\ml_server\Models\CropRecommendationModel(1).pkl'
+LABELENCODER_PATH = r'C:\Users\KAJAL\Desktop\MajorProject\crop_connect\ml_server\Models\labelencoder.pkl'
 
+# Load model
+with open(MODEL_PATH, 'rb') as model_file:
+    model_recommend = pickle.load(model_file)
 
+# Load label encoder
+with open(LABELENCODER_PATH, 'rb') as f:
+    le = pickle.load(f)
+
+def json_to_array(json_data): 
+    if isinstance(json_data, str):
+        data = json.loads(json_data)
+    else:
+        data = json_data
+    
+    features = [
+        data['N'],
+        data['P'],
+        data['K'],
+        data['temperature'],
+        data['humidity'],
+        data['ph'],
+        data['rainfall']
+    ]
+    
+    return np.array([features])
+
+@app.route("/crop-recommend", methods=["POST"])
+def recommend_crop():
+    try:
+        data = request.get_json()
+        print("Received JSON:", data)
+
+        features_array = json_to_array(data)
+
+        feature_names = ['N', 'P', 'K', 'temperature', 'humidity', 'ph', 'rainfall']
+        input_df = pd.DataFrame(features_array, columns=feature_names)
+
+        # Model prediction returns encoded label (integer)
+        prediction_encoded = model_recommend.predict(input_df)[0]
+
+        # Convert encoded label back to original crop name using labelencoder
+        predicted_crop = le.inverse_transform([prediction_encoded])[0]
+
+        return jsonify({"crop": predicted_crop})
+    
+    except Exception as e:
+        print("Error during prediction:", e)
+        return jsonify({"error": str(e)}), 500
+    
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5001, debug=True)
